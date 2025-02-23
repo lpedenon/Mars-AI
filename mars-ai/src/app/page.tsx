@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { Brain, Navigation, Play, FileText } from 'lucide-react';
 
 interface MenuOption {
+  icon: React.ReactNode
   id: 'brain' | 'destination' | 'simulation' | 'logs'
   title: string
   description: string
@@ -15,24 +17,28 @@ export default function Page() {
 
   const menuOptions: MenuOption[] = [
     {
+      icon: <Brain className="w-6 h-6 text-primary" />,
       id: 'brain',
       title: 'Select AI Brain',
       description: 'Choose from different AI models for pathfinding',
       enabled: true
     },
     {
+      icon: <Navigation className="w-6 h-6 text-primary" />,
       id: 'destination',
       title: 'Select Start/End Destination',
       description: 'Set navigation points on Mars terrain',
       enabled: true
     },
     {
+      icon: <Play className='w-6 h-6 text-primary' />,
       id: 'simulation',
       title: 'Run Simulation',
       description: 'Execute the pathfinding simulation',
       enabled: selectedBrain && selectedDestination
     },
     {
+      icon: <FileText className="w-6 h-6 text-primary" />,
       id: 'logs',
       title: 'View Logs',
       description: 'Review simulation history and analytics',
