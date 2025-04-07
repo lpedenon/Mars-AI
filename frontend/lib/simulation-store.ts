@@ -5,12 +5,18 @@ import { type StateCreator } from "zustand"
 
 type AlgorithmType = "a-star" | "dijkstra" | "rrt" | "neural"
 
+interface MapCoordinates {
+  latitude: number;
+  longitude: number;
+}
+
 interface SimulationState {
   isRunning: boolean
   aiComplexity: number
   simulationSpeed: number
   selectedAlgorithms: AlgorithmType[]
   terrainType: string
+  mapCoordinates: MapCoordinates
 
   toggleSimulation: () => void
   resetSimulation: () => void
@@ -18,6 +24,7 @@ interface SimulationState {
   setSimulationSpeed: (value: number) => void
   toggleAlgorithm: (algorithmId: AlgorithmType) => void
   setTerrainType: (type: string) => void
+  setMapCoordinates: (coords: MapCoordinates) => void
 }
 
 export const useSimulationStore = create<SimulationState>((set) => ({
@@ -26,6 +33,7 @@ export const useSimulationStore = create<SimulationState>((set) => ({
   simulationSpeed: 0.7,
   selectedAlgorithms: ["a-star"],
   terrainType: "highlands",
+  mapCoordinates: { latitude: 0, longitude: 0 },
 
   toggleSimulation: () => 
     set((state: SimulationState) => ({ 
@@ -56,6 +64,9 @@ export const useSimulationStore = create<SimulationState>((set) => ({
         }
       }
     }),
+
+  setMapCoordinates: (coords: MapCoordinates) =>
+    set({ mapCoordinates: coords }),
 
 }))
 

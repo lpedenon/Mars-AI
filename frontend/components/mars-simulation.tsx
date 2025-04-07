@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Maximize2, Minimize2, Play } from "lucide-react"
 import Image from "next/image"
 import { useSimulationStore } from "@/lib/simulation-store"
+import { useRouter } from "next/navigation"
 
 const terrainImages = {
   highlands: "/images/mars-surface.jpg",
@@ -17,9 +18,10 @@ export default function MarsSimulation() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number | undefined>(undefined)
   const lineProgressRef = useRef(0)
   const { terrainType } = useSimulationStore()
+  const router = useRouter()
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -107,8 +109,7 @@ export default function MarsSimulation() {
   }
 
   const handleRun = () => {
-    lineProgressRef.current = 0
-    setIsRunning(true)
+    router.push('/simulation')
   }
 
   return (
