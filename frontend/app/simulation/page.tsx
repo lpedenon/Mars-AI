@@ -1,40 +1,28 @@
-// "use client"
-
-// import { Suspense } from "react"
-// import MarsSimulation from "@/components/mars-simulation"
-// import SimulationControls from "@/components/simulation-controls"
-// import AIComparisonPanel from "@/components/ai-comparison-panel"
-// import { InfoPanel } from "@/components/info-panel"
-// import { Loader } from "@/components/loader"
-
-// export default function SimulationPage() {
-//   return (
-//     <h1>Simulation</h1>
-//   )
-// } 
-
-// pages/simulation/page.tsx
 "use client";
 
 import { Suspense } from "react";
-import UnityEmbed from "@/components/unityembeded";
+// import UnityEmbed from "@/components/unityembeded";
+import UnityComponent from "@/components/unitycomponent";
 import UnityControls from "@/components/unitycontrol";
 import SimulationControls from "@/components/simulation-controls";
 import AIComparisonPanel from "@/components/ai-comparison-panel";
 import { InfoPanel } from "@/components/info-panel";
 import { Loader } from "@/components/loader";
+import RoverDataDisplay from "@/components/rover-data-display";
+// import { Unity } from "react-unity-webgl";
 
 export default function SimulationPage() {
   return (
-    <div>
-      <h1>Simulation</h1>
-      {/* You might wrap UnityEmbed in Suspense if you want to show a loader */}
-      <Suspense fallback={<Loader />}>
-        <UnityEmbed />
-      </Suspense>
+    <div style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
+      <div style={{ width: "100%", height: "100%" }}>
+        <Suspense fallback={<Loader />}>
+          <UnityComponent />
+        </Suspense>
+      </div>
+      
       <UnityControls />
-      {/* Additional UI elements such as controls or info panels */}
       <SimulationControls />
+      <RoverDataDisplay />
       <AIComparisonPanel />
       <InfoPanel />
     </div>
