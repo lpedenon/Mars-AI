@@ -9,7 +9,8 @@ import { useSimulationStore } from "@/lib/simulation-store"
 import { useRouter } from "next/navigation"
 
 const terrainImages = {
-  highlands: "/images/mars-surface.jpg",
+  // highlands: "/images/mars-surface.jpg",
+  highlands: "/images/mars-texture.png",
   valles: "/images/valles-marineris.jpg",
   olympus: "/images/olympus-mons.jpg",
 }
