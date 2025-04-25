@@ -9,10 +9,15 @@ import { setupUnityCommunication } from "@/lib/unity-communication";
 const UnityComponent: React.FC = () => {
   // Consume the single shared Unity context
   const { unityProvider, isLoaded, loadingProgression } = useSharedUnity();
+  const devicePixelRatio = 
+    typeof window !== "undefined"
+      ? window.devicePixelRatio
+      : 1;
 
   // Set up communication between Unity and React
   useEffect(() => {
     setupUnityCommunication();
+    console.log("wdpr:", window.devicePixelRatio, "dpr:", devicePixelRatio);
   }, []);
 
   // Debug cavas size
@@ -37,9 +42,10 @@ const UnityComponent: React.FC = () => {
       {/* Render the Unity canvas */}
       <Unity
         id="unity-canvas"
+        key={devicePixelRatio}
         unityProvider={unityProvider}
         matchWebGLToCanvasSize={true} 
-        devicePixelRatio={window.devicePixelRatio}
+        devicePixelRatio={devicePixelRatio}
         // style={{ width: "100%", height: "100%", display: "block" }}
         style={{ width: "100%", height: "100%" }}
       />

@@ -12,6 +12,7 @@ export const unityConfig = {
   streamingAssetsUrl: 'StreamingAssets',
   productName: 'MarsAIWeb',
   productVersion: '0.1',
+  companyName: "MarsAIWeb",
 };
 
 // Log the Unity configuration
