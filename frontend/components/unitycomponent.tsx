@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { Unity } from "react-unity-webgl";
 import { useSharedUnity } from "@/components/shared-unity-context";
 import { setupUnityCommunication } from "@/lib/unity-communication";
-import "@/styles/unity-styles.css"
 
 const UnityComponent: React.FC = () => {
   // Consume the single shared Unity context
