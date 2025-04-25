@@ -1,6 +1,7 @@
 // components/unityContext.ts
 "use client";
 
+import React from "react";
 import { useUnityContext } from "react-unity-webgl";
 
 export const unityConfig = {
@@ -8,14 +9,21 @@ export const unityConfig = {
   dataUrl: "/MarsAIWeb/Build/MarsAIWeb.data.gz",
   frameworkUrl: "/MarsAIWeb/Build/MarsAIWeb.framework.js.gz",
   codeUrl: "/MarsAIWeb/Build/MarsAIWeb.wasm.gz",
+  streamingAssetsUrl: 'StreamingAssets',
+  productName: 'MarsAIWeb',
+  productVersion: '0.1',
 };
 
 // Log the Unity configuration
 console.log("Unity Config:", unityConfig);
 
 export const useMyUnityContext = () => {
-  console.log("Initializing Unity context");
+  const already = React.useRef(false);
+  if (!already.current) {
+    console.log("Initializing Unity context (first and only time)");
+    already.current = true;
+  }
   const unityContext = useUnityContext(unityConfig);
-  console.log("Unity context initialized:", unityContext);
+
   return unityContext;
 };

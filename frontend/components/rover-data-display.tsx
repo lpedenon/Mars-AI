@@ -2,22 +2,21 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { RoverData, updateRoverData, getRoverData } from "@/lib/unity-communication";
+import { useSharedUnity } from "./shared-unity-context";
 
 const RoverDataDisplay: React.FC = () => {
   const [roverData, setRoverData] = useState<RoverData>({});
   const [isOpen, setIsOpen] = useState(true);
   const latestDataRef = useRef<RoverData>({});
   const updateIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const { isLoaded } = useSharedUnity();
 
   useEffect(() => {
     // Function to handle the Unity data received event
     const handleUnityDataReceived = (event: CustomEvent<RoverData>) => {
       const data = event.detail;
-    //   console.log("Rover data received:", data);
-      
       // Store the latest data in the ref
       latestDataRef.current = data;
-      
       // Update the latest rover data in the utility
       updateRoverData(data);
     };
@@ -117,7 +116,9 @@ const RoverDataDisplay: React.FC = () => {
       
       {isOpen && (
         Object.keys(roverData).length === 0 ? (
-          <p style={{ margin: 0, fontSize: "14px" }}>Waiting for data from Unity...</p>
+          <p style={{ margin: 0, fontSize: "14px" }}>
+            {isLoaded ? "Waiting for data from Unity..." : "Unity not loaded"}
+          </p>
         ) : (
           <div style={{ fontSize: "14px" }}>
             {roverData.roverPosition && (
@@ -158,12 +159,6 @@ const RoverDataDisplay: React.FC = () => {
               </div>
             )}
             
-            {roverData.currentAlgorithm && (
-              <div style={{ marginBottom: "6px" }}>
-                <strong>Algorithm:</strong> {roverData.currentAlgorithm}
-              </div>
-            )}
-            
             {roverData.algorithmPerformance && (
               <div style={{ marginBottom: "6px" }}>
                 <strong>Performance:</strong>
@@ -179,7 +174,7 @@ const RoverDataDisplay: React.FC = () => {
             
             {/* Display any other properties that might be in the rover data */}
             {Object.entries(roverData).map(([key, value]) => {
-              // Skip properties we've already displayed
+              // Skip properties already displayed
               if ([
                 'roverPosition', 'roverSpeed', 'roverBattery', 'roverStatus',
                 'batteryLevel', 'distanceTraveled', 'currentAlgorithm', 'algorithmPerformance'
@@ -200,4 +195,4 @@ const RoverDataDisplay: React.FC = () => {
   );
 };
 
-export default RoverDataDisplay; 
+export default RoverDataDisplay;

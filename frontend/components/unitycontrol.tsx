@@ -2,52 +2,21 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSharedUnity } from "./shared-unity-context";
 
 const UnityControls: React.FC = () => {
-  const [isUnityLoaded, setIsUnityLoaded] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-
-  useEffect(() => {
-    // Function to handle the Unity loaded event
-    const handleUnityLoaded = (event: CustomEvent) => {
-      console.log("Unity loaded event received:", event.detail);
-      setIsUnityLoaded(true);
-    };
-
-    // Check if Unity is already loaded
-    const checkUnityLoaded = () => {
-      if (typeof window !== 'undefined' && (window as any).unityInstance) {
-        console.log("Unity instance found");
-        setIsUnityLoaded(true);
-      } else {
-        console.log("Unity instance not found, waiting for event...");
-      }
-    };
-
-    // Initial check
-    checkUnityLoaded();
-
-    // Add event listener for the Unity loaded event
-    window.addEventListener('unityLoaded', handleUnityLoaded as EventListener);
-
-    // Clean up function
-    return () => {
-      window.removeEventListener('unityLoaded', handleUnityLoaded as EventListener);
-    };
-  }, []);
+  const { sendMessage, isLoaded } = useSharedUnity();
 
   const togglePlayPause = () => {
-    if (typeof window !== 'undefined' && (window as any).unityInstance) {
+    if (isLoaded) {
       if (isPaused) {
-        // Resume the game
-        (window as any).unityInstance.SendMessage('GameController', 'ResumeGame');
+        sendMessage('GameController', 'ResumeGame');
         console.log("Play button clicked");
       } else {
-        // Pause the game
-        (window as any).unityInstance.SendMessage('GameController', 'PauseGame');
+        sendMessage('GameController', 'PauseGame');
         console.log("Pause button clicked");
       }
-      // Toggle the paused state
       setIsPaused(!isPaused);
     } else {
       console.error("Unity instance not found");
@@ -68,7 +37,7 @@ const UnityControls: React.FC = () => {
     >
       <button
         onClick={togglePlayPause}
-        disabled={!isUnityLoaded}
+        disabled={!isLoaded}
         style={{
           padding: "12px 24px",
           fontSize: "16px",
