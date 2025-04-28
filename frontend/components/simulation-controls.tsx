@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label"
 import { useSimulationStore } from "@/lib/simulation-store"
 import { useSimulationConfig } from "@/lib/SimulationConfig"
+import type { AlgorithmType } from "@/lib/simulation-store"
 
 export default function SimulationControls() {
   const { config, setConfig } = useSimulationConfig();
@@ -23,10 +24,10 @@ export default function SimulationControls() {
   } = useSimulationStore()
 
   const algorithms = [
-    { id: "a-star", name: "A* Algorithm", description: "Optimal path finding" },
-    { id: "dijkstra", name: "Dijkstra's", description: "Shortest path algorithm" },
-    { id: "rrt", name: "RRT", description: "Rapidly-exploring random tree" },
-    { id: "neural", name: "Neural Network", description: "Learning-based navigation" },
+    { id: "simple", name: "A* Algorithm", description: "Optimal path finding" },
+    // { id: "dijstra", name: "Dijkstra's", description: "Shortest path algorithm" },
+    { id: "hill", name: "Hill Avoidance", description: "Avoid hills if possible" },
+    { id: "user", name: "User Control", description: "User can freely control the rover" },
   ]
 
   const terrainTypes = [
@@ -41,7 +42,7 @@ export default function SimulationControls() {
         <CardTitle>Simulation Controls</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="ai-complexity">AI Complexity</Label>
             <span className="text-xs text-muted-foreground">{Math.round(aiComplexity * 100)}%</span>
@@ -54,9 +55,9 @@ export default function SimulationControls() {
             value={[aiComplexity]}
             onValueChange={(value) => setAiComplexity(value[0])}
           />
-        </div>
+        </div> */}
 
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="simulation-speed">Simulation Speed</Label>
             <span className="text-xs text-muted-foreground">{Math.round(simulationSpeed * 100)}%</span>
@@ -69,7 +70,7 @@ export default function SimulationControls() {
             value={[simulationSpeed]}
             onValueChange={(value) => setSimulationSpeed(value[0])}
           />
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           <Label>Location</Label>
@@ -107,7 +108,26 @@ export default function SimulationControls() {
         </div>
 
         <div className="space-y-3">
-          <Label>AI Algorithms</Label>
+          <Label>Destination Point</Label>
+          <Select
+            value={config.destinationIndex.toString()}
+            onValueChange={(value) =>
+              setConfig({ ...config, destinationIndex: parseInt(value) })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select destination point" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="-1">Random</SelectItem>
+              <SelectItem value="0">A</SelectItem>
+              <SelectItem value="1">B</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-3">
+          <Label>Rover Brain</Label>
           {algorithms.map((algorithm) => (
             <div key={algorithm.id} className="flex items-center justify-between">
               <div className="space-y-0.5">
@@ -115,16 +135,18 @@ export default function SimulationControls() {
                 <div className="text-xs text-muted-foreground">{algorithm.description}</div>
               </div>
               <Switch
-                checked={selectedAlgorithms.includes(algorithm.id as "a-star" | "dijkstra" | "rrt" | "neural")}
-                onCheckedChange={() => toggleAlgorithm(algorithm.id as "a-star" | "dijkstra" | "rrt" | "neural")}
+                // checked={selectedAlgorithms[0] === algorithm.id}
+                // onCheckedChange={() => toggleAlgorithm(algorithm.id as AlgorithmType)}
+                checked={config.brain === algorithm.id}
+                onCheckedChange={() => setConfig({ ...config, brain: algorithm.id })}
               />
             </div>
           ))}
         </div>
 
-        <Button className="w-full" variant="outline" onClick={() => {}}>
+        {/* <Button className="w-full" variant="outline" onClick={() => {}}>
           Generate New Terrain
-        </Button>
+        </Button> */}
       </CardContent>
     </Card>
   )

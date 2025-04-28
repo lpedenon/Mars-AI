@@ -2,13 +2,26 @@
 
 import React, { useState, useEffect } from "react";
 import { useSharedUnity } from "./shared-unity-context";
+import { useSimulationConfig } from "@/lib/SimulationConfig";
 
 const RoverBrain: React.FC = () => {
-    const [selectedBrain, setSelectedBrain] = useState("none");
+    const [selectedBrain, setSelectedBrain] = useState("user");
     const { sendMessage, isLoaded } = useSharedUnity();
+    const { config, setConfig } = useSimulationConfig();
+
+    useEffect(() => {
+        if (isLoaded) {
+            sendMessage('WebGLBridge', 'SetBrain', config.brain);
+            setSelectedBrain(config.brain);
+            console.log("Unity brain updated to:", config.brain);
+        } else {
+            console.log("Unity not loaded yet when trying to set brain");
+        }
+    }, [isLoaded, config.brain]);
     
     const handleBrainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedBrain(e.target.value);
+        setConfig({ ...config, brain: e.target.value });
         if (isLoaded) {
             sendMessage('WebGLBridge', 'SetBrain', e.target.value);
             console.log("setting rover brain to:", e.target.value);
@@ -38,9 +51,10 @@ const RoverBrain: React.FC = () => {
                 Select Brain:
             </label>
             <select
-                id="barin-select"
-                value={selectedBrain}
+                id="brain-select"
+                value={isLoaded ? selectedBrain : ""}
                 onChange={handleBrainChange}
+                disabled={!isLoaded}
                 style={{
                     width: "100%",
                     padding: "8px",
@@ -51,9 +65,10 @@ const RoverBrain: React.FC = () => {
                     fontSize: "14px"
                 }}
             >
+                {!isLoaded && <option value="">Loading...</option>}
                 <option value="user">Manual Control</option>
-                <option value="hill">Hill Avoidance AI</option>
-                <option value="simple">Simple AI</option>
+                <option value="hill">Hill Avoidance</option>
+                <option value="simple">Simple</option>
             </select>
         </div>
     );

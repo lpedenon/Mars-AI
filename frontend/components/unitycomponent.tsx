@@ -46,6 +46,14 @@ const UnityComponent: React.FC = () => {
       console.log("Spawning to:", config.spawnIndex);
       sendMessage("RoverSpawner", "TeleportTo", config.spawnIndex);
     }
+
+    if (config.destinationIndex >= 0) {
+      console.log("Setting destination point to: ", config.destinationIndex);
+      sendMessage("DestinationManager", "SetDestinationPoint", config.destinationIndex);
+    }
+
+    sendMessage("WebGLBridge", "SetBrain", config.brain);
+
   }, [isLoaded, config, sendMessage]);
 
   return (

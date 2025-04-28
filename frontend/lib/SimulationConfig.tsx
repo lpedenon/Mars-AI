@@ -10,12 +10,15 @@ import {
 
 export type SimConfig = {
   spawnIndex: number;
-  brain: "none" | "hill" | "simple";
+  destinationIndex: number;
+//   brain: "user" | "hill" | "simple";
+  brain: string;
 };
 
 const DEFAULT: SimConfig = {
   spawnIndex: 0,
-  brain: "none",
+  destinationIndex: -1,
+  brain: "user",
 };
 
 type ContextType = {

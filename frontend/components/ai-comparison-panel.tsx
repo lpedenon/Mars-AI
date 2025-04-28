@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useSimulationStore } from "@/lib/simulation-store"
 
-type AlgorithmType = "a-star" | "dijkstra" | "rrt" | "neural"
+type AlgorithmType = "a-star" | "dijkstra" | "hill-avoidance" | "neural"
 
 type AlgorithmMetrics = {
   pathLength: string
@@ -37,7 +37,7 @@ export default function AIComparisonPanel() {
       optimality: "High",
       adaptability: "Low",
     },
-    rrt: {
+    "hill-avoidance": {
       pathLength: "389m",
       executionTime: "0.5s",
       memoryUsage: "Low",

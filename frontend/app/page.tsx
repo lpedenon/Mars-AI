@@ -36,7 +36,7 @@ export default function Home() {
 
         <div className="flex w-full flex-col gap-4 lg:w-80">
           <SimulationControls />
-          <AIComparisonPanel />
+          {/* <AIComparisonPanel /> */}
           <InfoPanel />
         </div>
       </div>

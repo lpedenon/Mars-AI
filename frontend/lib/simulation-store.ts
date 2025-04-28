@@ -3,7 +3,7 @@
 import { create } from "zustand"
 import { type StateCreator } from "zustand"
 
-type AlgorithmType = "a-star" | "dijkstra" | "rrt" | "neural"
+export type AlgorithmType = "a-star" | "dijkstra" | "hill-avoidance" | "neural"
 
 interface MapCoordinates {
   latitude: number;
@@ -54,15 +54,12 @@ export const useSimulationStore = create<SimulationState>((set) => ({
 
   toggleAlgorithm: (algorithmId: AlgorithmType) =>
     set((state: SimulationState) => {
-      if (state.selectedAlgorithms.includes(algorithmId)) {
-        return {
-          selectedAlgorithms: state.selectedAlgorithms.filter((id: AlgorithmType) => id !== algorithmId),
-        }
-      } else {
-        return {
-          selectedAlgorithms: [...state.selectedAlgorithms, algorithmId],
-        }
+      if (state.selectedAlgorithms[0] === algorithmId) {
+        return state;
       }
+      return {
+        selectedAlgorithms: [algorithmId],
+      };
     }),
 
   setMapCoordinates: (coords: MapCoordinates) =>
