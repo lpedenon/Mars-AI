@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useMyUnityContext } from "@/components/unitycontext";
 import { SharedUnityContext } from "@/components/shared-unity-context";
 import UnityComponent from "@/components/unitycomponent";
@@ -12,9 +12,15 @@ import { Loader } from "@/components/loader";
 import RoverDataDisplay from "@/components/rover-data-display";
 import RoverBrain from "@/components/rover-brain";
 import UnityLogger from "@/components/UnityLogger";
+import { useSimulationConfig } from "@/lib/SimulationConfig";
 
 export default function SimulationPage() {
+  const { config } = useSimulationConfig();
   const unity = useMyUnityContext();
+
+  useEffect(() => {
+    console.log("Spawn Index changed:", config.spawnIndex);
+  }, [config.spawnIndex]);
 
   return (
     <SharedUnityContext.Provider value={unity}>

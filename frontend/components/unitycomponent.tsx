@@ -5,10 +5,12 @@ import React, { useEffect, useState } from "react";
 import { Unity } from "react-unity-webgl";
 import { useSharedUnity } from "@/components/shared-unity-context";
 import { setupUnityCommunication } from "@/lib/unity-communication";
+import { useSimulationConfig } from "@/lib/SimulationConfig";
 
 const UnityComponent: React.FC = () => {
   // Consume the single shared Unity context
-  const { unityProvider, isLoaded, loadingProgression } = useSharedUnity();
+  const { unityProvider, isLoaded, loadingProgression, sendMessage } = useSharedUnity();
+  const { config } = useSimulationConfig();
   const devicePixelRatio = 
     typeof window !== "undefined"
       ? window.devicePixelRatio
@@ -36,6 +38,15 @@ const UnityComponent: React.FC = () => {
   //     });
   //   }
   // });
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (config.spawnIndex > 0) {
+      console.log("Spawning to:", config.spawnIndex);
+      sendMessage("RoverSpawner", "TeleportTo", config.spawnIndex);
+    }
+  }, [isLoaded, config, sendMessage]);
 
   return (
     <div id="unity-container" style={{ width: "100%", height: "100vh", position: "relative" }}>

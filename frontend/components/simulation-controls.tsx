@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { useSimulationStore } from "@/lib/simulation-store"
+import { useSimulationConfig } from "@/lib/SimulationConfig"
 
 export default function SimulationControls() {
+  const { config, setConfig } = useSimulationConfig();
+
   const {
     aiComplexity,
     simulationSpeed,
@@ -80,6 +83,25 @@ export default function SimulationControls() {
                   {type.label}
                 </SelectItem>
               ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-3">
+          <Label>Spawn Point</Label>
+          <Select
+            value={config.spawnIndex.toString()}
+            onValueChange={(value) =>
+              setConfig({ ...config, spawnIndex: parseInt(value) })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select spawn point" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="0">A</SelectItem>
+              <SelectItem value="1">B</SelectItem>
+              <SelectItem value="2">C</SelectItem>
             </SelectContent>
           </Select>
         </div>
