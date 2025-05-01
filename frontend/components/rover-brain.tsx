@@ -1,13 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSharedUnity } from "./shared-unity-context";
+import { useSharedUnity } from "@/components/shared-unity-context";
+// import { useUnity } from "@/components/unity-provider";
 import { useSimulationConfig } from "@/lib/SimulationConfig";
 
 const RoverBrain: React.FC = () => {
     const [selectedBrain, setSelectedBrain] = useState("user");
     const { sendMessage, isLoaded } = useSharedUnity();
     const { config, setConfig } = useSimulationConfig();
+
+    useEffect(() => {
+        if (!isLoaded) {
+            console.log("Unity Instance not found when trying to set brain");
+        }
+        else {
+            console.log("Unity Instance found when trying to set brain");
+        }
+    }, [isLoaded]);
 
     useEffect(() => {
         if (isLoaded) {
@@ -17,17 +27,19 @@ const RoverBrain: React.FC = () => {
         } else {
             console.log("Unity not loaded yet when trying to set brain");
         }
-    }, [isLoaded, config.brain]);
+    }, [isLoaded, config.brain]); // Add config.brain to dependencies
     
     const handleBrainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedBrain(e.target.value);
-        setConfig({ ...config, brain: e.target.value });
+        const newBrain = e.target.value;
+        setSelectedBrain(newBrain);
+        setConfig({ ...config, brain: newBrain });
+        
         if (isLoaded) {
-            sendMessage('WebGLBridge', 'SetBrain', e.target.value);
-            console.log("setting rover brain to:", e.target.value);
+            sendMessage('WebGLBridge', 'SetBrain', newBrain);
+            console.log("setting rover brain to:", newBrain);
         } else {
             console.log("Unity Instance not found when trying to swap brain");
-        }
+        }    
     };
 
     return (
@@ -68,7 +80,7 @@ const RoverBrain: React.FC = () => {
                 {!isLoaded && <option value="">Loading...</option>}
                 <option value="user">Manual Control</option>
                 <option value="hill">Hill Avoidance</option>
-                <option value="simple">Simple</option>
+                <option value="shortest-path">Shortest Path</option>
             </select>
         </div>
     );

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, Suspense, useEffect } from "react";
-import { useMyUnityContext } from "@/components/unitycontext";
-import { SharedUnityContext } from "@/components/shared-unity-context";
+// import { useMyUnityContext } from "@/components/unitycontext";
+// import { SharedUnityContext } from "@/components/shared-unity-context";
+// import { useSharedUnity } from "@/components/shared-unity-context";
+// import { UnityProvider } from "@/components/unity-provider";
 import UnityComponent from "@/components/unitycomponent";
 import UnityControls from "@/components/unitycontrol";
 import SimulationControls from "@/components/simulation-controls";
@@ -11,21 +13,17 @@ import { InfoPanel } from "@/components/info-panel";
 import { Loader } from "@/components/loader";
 import RoverDataDisplay from "@/components/rover-data-display";
 import RoverBrain from "@/components/rover-brain";
-import UnityLogger from "@/components/UnityLogger";
+import UnityLogger from "@/components/unity-logger";
 import { useSimulationConfig } from "@/lib/SimulationConfig";
 import { getRoverData } from "@/lib/unity-communication";
-import DestinationPopup from "@/components/DestinationPopup";
+import DestinationPopup from "@/components/destination-popup";
+import HomeButton from "@/components/home-button";
 
 export default function SimulationPage() {
   const [destinationReached, setDestinationReached] = useState(false);
   const [finalStats, setFinalStats] = useState({ distance: 0, battery: 0, timeElapsed: 0 });
   const [elapsedTime, setElapsedTime] = useState(0);
   const { config } = useSimulationConfig();
-  const unity = useMyUnityContext();
-
-  useEffect(() => {
-    console.log("Spawn Index changed:", config.spawnIndex);
-  }, [config.spawnIndex]);
 
   useEffect(() => {
     // Step 1: Define Unity hook
@@ -53,13 +51,10 @@ export default function SimulationPage() {
     return () => {
       window.removeEventListener('destinationReached', handleDestinationReached);
     };
-  }, []);
-  
-  
-  
+  }, [elapsedTime, config]);
 
   return (
-    <SharedUnityContext.Provider value={unity}>
+    // <SharedUnityContext.Provider value={unity}>
       <div style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
         <div style={{ width: "100%", height: "100%" }}>
           <Suspense fallback={<Loader />}>
@@ -67,6 +62,7 @@ export default function SimulationPage() {
           </Suspense>
         </div>
         
+        <HomeButton />
         <UnityControls />
         <SimulationControls />
         <RoverDataDisplay />
@@ -83,6 +79,6 @@ export default function SimulationPage() {
         <AIComparisonPanel />
         <InfoPanel />
       </div>
-    </SharedUnityContext.Provider>
+    // </SharedUnityContext.Provider>
   );
 }

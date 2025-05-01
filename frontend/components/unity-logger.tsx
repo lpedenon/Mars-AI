@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSharedUnity } from "./shared-unity-context";
+import { useSharedUnity } from "@/components/shared-unity-context";
 
 const UnityLogger: React.FC = () => {
   const unity = useSharedUnity();

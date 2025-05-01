@@ -11,7 +11,7 @@ import {
 export type SimConfig = {
   spawnIndex: number;
   destinationIndex: number;
-//   brain: "user" | "hill" | "simple";
+//   brain: "user" | "hill" | "simple" | "shortest-path";
   brain: string;
 };
 

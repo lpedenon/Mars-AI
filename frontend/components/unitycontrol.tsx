@@ -2,7 +2,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSharedUnity } from "./shared-unity-context";
+import { useSharedUnity } from "@/components/shared-unity-context";
+// import { useUnity } from "@/components/unity-provider";
 
 const UnityControls: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
@@ -10,17 +11,17 @@ const UnityControls: React.FC = () => {
 
   const togglePlayPause = () => {
     if (isLoaded) {
-      if (isPaused) {
-        sendMessage('GameController', 'ResumeGame');
-        console.log("Play button clicked");
-      } else {
-        sendMessage('GameController', 'PauseGame');
-        console.log("Pause button clicked");
-      }
-      setIsPaused(!isPaused);
+    if (isPaused) {
+      sendMessage('GameController', 'ResumeGame');
+      console.log("Play button clicked");
+    } else {
+      sendMessage('GameController', 'PauseGame');
+      console.log("Pause button clicked");
+    }
+    setIsPaused(!isPaused);
     } else {
       console.error("Unity instance not found");
-    }
+    }  
   };
 
   return (

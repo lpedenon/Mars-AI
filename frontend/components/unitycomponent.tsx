@@ -1,7 +1,7 @@
 // components/UnityComponent.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Unity } from "react-unity-webgl";
 import { useSharedUnity } from "@/components/shared-unity-context";
 import { setupUnityCommunication } from "@/lib/unity-communication";
@@ -53,8 +53,7 @@ const UnityComponent: React.FC = () => {
     }
 
     sendMessage("WebGLBridge", "SetBrain", config.brain);
-
-  }, [isLoaded, config, sendMessage]);
+  }, [isLoaded, config.spawnIndex, config.destinationIndex, config.brain]);
 
   return (
     <div id="unity-container" style={{ width: "100%", height: "100vh", position: "relative" }}>

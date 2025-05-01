@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { RoverData, updateRoverData, getRoverData } from "@/lib/unity-communication";
-import { useSharedUnity } from "./shared-unity-context";
+import { useSharedUnity } from "@/components/shared-unity-context";
+// import { useUnity } from "@/components/unity-provider";
 
 const RoverDataDisplay: React.FC = () => {
   const [roverData, setRoverData] = useState<RoverData>({});
@@ -12,6 +13,8 @@ const RoverDataDisplay: React.FC = () => {
   const { isLoaded } = useSharedUnity();
 
   useEffect(() => {
+    if (!isLoaded) return;
+
     // Function to handle the Unity data received event
     const handleUnityDataReceived = (event: CustomEvent<RoverData>) => {
       const data = event.detail;
@@ -43,7 +46,7 @@ const RoverDataDisplay: React.FC = () => {
         clearInterval(updateIntervalRef.current);
       }
     };
-  }, []);
+  }, [isLoaded]);
 
   // Function to format a value to a maximum of 2 decimal places
   const formatValue = (value: any): string => {

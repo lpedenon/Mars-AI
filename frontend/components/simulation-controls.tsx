@@ -24,8 +24,8 @@ export default function SimulationControls() {
   } = useSimulationStore()
 
   const algorithms = [
-    { id: "simple", name: "A* Algorithm", description: "Optimal path finding" },
-    // { id: "dijstra", name: "Dijkstra's", description: "Shortest path algorithm" },
+    // { id: "simple", name: "A* Algorithm", description: "Optimal path finding" },
+    { id: "shortest-path", name: "Shortest Path", description: "Shortest path to destination"},
     { id: "hill", name: "Hill Avoidance", description: "Avoid hills if possible" },
     { id: "user", name: "User Control", description: "User can freely control the rover" },
   ]
@@ -42,36 +42,6 @@ export default function SimulationControls() {
         <CardTitle>Simulation Controls</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="ai-complexity">AI Complexity</Label>
-            <span className="text-xs text-muted-foreground">{Math.round(aiComplexity * 100)}%</span>
-          </div>
-          <Slider
-            id="ai-complexity"
-            min={0.1}
-            max={1}
-            step={0.1}
-            value={[aiComplexity]}
-            onValueChange={(value) => setAiComplexity(value[0])}
-          />
-        </div> */}
-
-        {/* <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="simulation-speed">Simulation Speed</Label>
-            <span className="text-xs text-muted-foreground">{Math.round(simulationSpeed * 100)}%</span>
-          </div>
-          <Slider
-            id="simulation-speed"
-            min={0.1}
-            max={1}
-            step={0.1}
-            value={[simulationSpeed]}
-            onValueChange={(value) => setSimulationSpeed(value[0])}
-          />
-        </div> */}
-
         <div className="space-y-2">
           <Label>Location</Label>
           <Select value={terrainType} onValueChange={setTerrainType}>
@@ -135,8 +105,6 @@ export default function SimulationControls() {
                 <div className="text-xs text-muted-foreground">{algorithm.description}</div>
               </div>
               <Switch
-                // checked={selectedAlgorithms[0] === algorithm.id}
-                // onCheckedChange={() => toggleAlgorithm(algorithm.id as AlgorithmType)}
                 checked={config.brain === algorithm.id}
                 onCheckedChange={() => setConfig({ ...config, brain: algorithm.id })}
               />
